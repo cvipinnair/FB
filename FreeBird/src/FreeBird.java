@@ -18,11 +18,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;  
+import javax.swing.JOptionPane;
 
 public class FreeBird 
 {
   public static void main(String[] args) throws Exception 
   {
+	 JOptionPane.showMessageDialog(null, "Started Running..", "FreeBird", JOptionPane.INFORMATION_MESSAGE);
+	    
     FileSystem fileSystem = FileSystems.getDefault();
     WatchService watchService = fileSystem.newWatchService();
     Path directory = Paths.get("C:\\FB");
@@ -75,7 +78,7 @@ public class FreeBird
 			Class.forName("com.mysql.jdbc.Driver");  
 			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sakila","root","root");        
 		
-	        	try (BufferedReader br = new BufferedReader(new FileReader("C:\\FreeBird\\"+filename1)))
+	        	try (BufferedReader br = new BufferedReader(new FileReader("C:\\FB\\"+filename1)))
 	        	{
 
 					String sqlinsert = "INSERT INTO NEIGHBOR_DEFINED (SOURCERNCID,SOURCECELLID,TARGETRNCID,TARGETCELLID,INSERTDATE)VALUES (?,?,?,?,CURDATE())";
@@ -145,7 +148,7 @@ public class FreeBird
 			Class.forName("com.mysql.jdbc.Driver");  
 		  	Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sakila","root","root");  
 		 	
-		 	try (BufferedReader br = new BufferedReader(new FileReader("C:\\FreeBird\\"+filename2)))
+		 	try (BufferedReader br = new BufferedReader(new FileReader("C:\\FB\\"+filename2)))
       	{
 		 		System.out.println("CSV file loader started......");
 		 		br.readLine();
