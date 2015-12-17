@@ -310,7 +310,7 @@ public class FreeBird
       		String sql41 = "drop table z2";
 			PreparedStatement pstmt42=con.prepareStatement(sql41);
 			pstmt42.executeUpdate();
-			System.out.println("completed drop table z2...");	
+			System.out.println("Completed drop table z2...");	
 		 	}
 		 	catch (IOException e) 
 			{
