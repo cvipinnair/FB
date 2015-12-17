@@ -266,7 +266,7 @@ public class FreeBird
       			
       			pstmt.executeUpdate();
       		}
-      		System.out.println("CSV finished inserting to database");
+      		System.out.println("CSV finished inserting to temp database");
       		//ResultSet rs=pstmt.executeQuery("select * from complete_database");  
     		   	//while(rs.next())  
   		 		//System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3)+"  "+rs.getString(4)+"  "+rs.getString(5));  
@@ -310,7 +310,7 @@ public class FreeBird
       		String sql41 = "drop table z2";
 			PreparedStatement pstmt42=con.prepareStatement(sql41);
 			pstmt42.executeUpdate();
-			System.out.println("completed...");	
+			System.out.println("completed drop table z2...");	
 		 	}
 		 	catch (IOException e) 
 			{
