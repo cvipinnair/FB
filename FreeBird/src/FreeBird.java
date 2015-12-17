@@ -297,7 +297,7 @@ public class FreeBird
 			String sql4 = "drop table z1";
 			PreparedStatement pstmt4=con.prepareStatement(sql4);
 			pstmt4.executeUpdate();
-			System.out.println("completed...");	
+			System.out.println("completed neighbor to be defined...");	
 
       		
       		
