@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Custom Symbols</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+// This example adds three custom symbols to a polyline.
+
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 4,
+    center: {lat: -25.363882, lng: 131.044922}
+  });
+
+  var marker1 = new google.maps.Marker({
+    position: {lat: -25.373882, lng: 131.044922},
+    icon: {
+     path: google.maps.SymbolPath.BACKWARD_OPEN_ARROW,
+     rotation: 45,
+	fillColor: 'red',
+	fillOpacity: 0.8,
+	scale: 5,
+	strokeColor: 'red',
+	strokeWeight: 1
+    },
+    draggable: true,
+    map: map
+  });
+ var marker2 = new google.maps.Marker({
+    position: {lat: -25.363882, lng: 131.044922},
+    icon: {
+     path: google.maps.SymbolPath.BACKWARD_OPEN_ARROW,
+     rotation: 320,
+	fillColor: 'red',
+	fillOpacity: 0.8,
+	scale: 5,
+	strokeColor: 'red',
+	strokeWeight: 1
+    },
+    draggable: true,
+    map: map
+  });
+
+
+  var marker3 = new google.maps.Marker({
+    position: {lat: -25.363882, lng: 131.054922},
+    icon: {
+     path: google.maps.SymbolPath.BACKWARD_OPEN_ARROW,
+     rotation: 220,
+	fillColor: 'red',
+	fillOpacity: 0.8,
+	scale: 5,
+	strokeColor: 'red',
+	strokeWeight: 1
+    },
+    draggable: true,
+    map: map
+  });
+
+  marker1.addListener('click', function() {
+    map.setZoom(1);
+    map.setCenter(marker.getPosition());
+  });
+  marker2.addListener('click', function() {
+    map.setZoom(15);
+    map.setCenter(marker.getPosition());
+  });
+  marker3.addListener('click', function() {
+    map.setZoom(50);
+    map.setCenter(marker.getPosition());
+  });
+
+}
+
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=Key&signed_in=true&callback=initMap"></script>
+  </body>
+</html>
