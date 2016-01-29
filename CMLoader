@@ -1,0 +1,166 @@
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
+import java.lang.*;
+import java.awt.*;
+import java.io.*;
+import java.util.*;
+import java.net.*;
+import java.nio.file.*;
+import java.nio.charset.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.*;  
+import java.util.logging.*;
+
+public class KKRML01CMLoader 
+{
+	
+  public static void main(String[] args) throws Exception 
+  {
+	 FileHandler fileTxt = new FileHandler("CMLoader.log", true);
+      SimpleFormatter formatter = new SimpleFormatter();
+      fileTxt.setFormatter(formatter);
+      Logger LOGGER = Logger.getLogger(PMLoader.class.getName());
+      LOGGER.addHandler(fileTxt);
+      LOGGER.setLevel(Level.INFO);
+      //LOGGER.info("This is a serious problem !");
+	 
+	 
+    FileSystem fileSystem = FileSystems.getDefault();
+    WatchService watchService = fileSystem.newWatchService();
+    Path directory = Paths.get("C:\\FB");
+    WatchEvent.Kind<?>[] events = { StandardWatchEventKinds.ENTRY_MODIFY};//        StandardWatchEventKinds.ENTRY_DELETE,        StandardWatchEventKinds.ENTRY_MODIFY };
+    directory.register(watchService, events);
+    while (true) 
+    {
+    	LOGGER.info("Waiting for a watch event");
+      WatchKey watchKey = watchService.take();
+      LOGGER.info("Path being watched: " + watchKey.watchable());
+      if (watchKey.isValid() == false) 
+      {
+        return;
+      }
+      for (WatchEvent<?> event : watchKey.pollEvents()) 
+      {
+        LOGGER.info("Kind: " + event.kind());
+        LOGGER.info("Context: " + event.context());
+        String filename = event.context().toString();
+        if( filename.contains("KKRML01"))
+        {
+        	XMLLoader(filename);
+        	LOGGER.info("file selected"+filename);
+        }
+        
+    
+        
+        LOGGER.info("Count: " + event.count());
+        //System.out.println();
+      }
+      boolean valid = watchKey.reset();
+      System.out.println(valid);
+     // LOGGER.info();
+    }
+    
+   
+  }
+  
+
+  public static void XMLLoader(String filename1) throws SecurityException, IOException
+  {
+// test msg
+	 FileHandler fileTxt = new FileHandler("CMLoader.log", true);
+      SimpleFormatter formatter = new SimpleFormatter();
+      fileTxt.setFormatter(formatter);
+      Logger LOGGER = Logger.getLogger(PMLoader.class.getName());
+      LOGGER.addHandler(fileTxt);
+      LOGGER.setLevel(Level.INFO);
+	 
+	 
+	 
+		String line= "";
+		String line1= "";
+		
+		boolean a,b;
+		String lineSep = System.getProperty("line.separator");
+		
+		try
+	   {      
+			Class.forName("com.mysql.jdbc.Driver");  
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sakila","root","root");        
+		
+	       	try (BufferedReader br = new BufferedReader(new FileReader("C:\\FB\\"+filename1)))
+	       	{
+
+					String sqlinsert = "INSERT INTO NEIGHBOR_DEFINED (SOURCERNCID,SOURCECELLID,TARGETRNCID,TARGETCELLID,INSERTDATE)VALUES (?,?,?,?,CURDATE())";
+	   			PreparedStatement pstmt=con.prepareStatement(sqlinsert);
+					
+	   			LOGGER.info("Started INSERT INTO NEIGHBOR_DEFINED...");
+	       		
+	       		while ((line = br.readLine()) != null ) 
+          		{
+	       			
+	       			a = line.indexOf("MO className") >0;
+          			b = line.indexOf("INTRAFREQNCELL=") > 0;
+          		   if (a&&b)
+          			{
+          		   	
+          		   	 //String str = "abcd=0; efgh=1";
+          		   	 line = line.replaceAll("[^a-zA-Z0-9]", ",");
+          		   	 //String replacedStr2 = line.replaceAll("">", "_");
+          		   	 String[] lineVar1 = line.split(","); 
+          		   	 //wr.write(line);
+          		   	 //wr.write(lineSep);
+          				//wr.write(lineVar1[19]+","+lineVar1[20]+","+lineVar1[21]+","+lineVar1[22]);
+  						//wr.write(lineSep);
+          		   	 
+          		   	 
+          		   	pstmt.setString(1, lineVar1[22]);
+               			pstmt.setString(2, lineVar1[19]);
+               			pstmt.setString(3, lineVar1[21]);
+               			pstmt.setString(4, lineVar1[20]);
+               			//String temp = "CURDATE()";
+               			//pstmt.setString(5, temp );
+               			pstmt.executeUpdate();
+  						
+          			}
+          			
+          		}
+	       	LOGGER.info("Inserted to Neighbor_defined...");
+	       	
+	       	}
+	       	catch (IOException e) 
+				{
+	       		LOGGER.info(e.getMessage());//System.err.println(e);
+				}
+	       //	wr.close();
+	       	con.close();  
+	    }
+		catch (Exception e) 
+		{
+			LOGGER.info(e.getMessage());//System.err.println(e);
+		}
+	
+
+
+	 
+	 
+	 
+	 
+  }
+  
+
+  
+  
+  
+  
+  
+  
+}
+
